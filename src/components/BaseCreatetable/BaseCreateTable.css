@@ -1,0 +1,43 @@
+.btn_b {
+  border: 1px solid #0578be;
+  min-width: 100px;
+  background-color: #2e86de;
+}
+.btn_b-dark {
+  border: 1px solid white;
+  min-width: 100px;
+  color: white;
+  background-color: transparent;
+}
+.table_form {
+  border: 1px solid #0578be;
+}
+.text_info {
+  background-color: #cccccc;
+  display: inline-block;
+  padding: 10px;
+  width: 150px;
+}
+.form-control:focus {
+  box-shadow: none !important;
+}
+
+.btn_note {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  text-align: start;
+  padding: 0 2px;
+  font-size: 20px;
+  color: #727171;
+}
+.form-control:disabled {
+  background-color: white !important;
+}
+.form-control {
+  font-size: 20px !important;
+}
+.spinner_modal .modal-content {
+  background-color: transparent !important;
+  border: none !important;
+}

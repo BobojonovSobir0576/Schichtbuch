@@ -1,0 +1,42 @@
+.search_page {
+  border: 1px solid #0578be;
+}
+.search_page-dark {
+  border: 1px solid white;
+}
+.search_page-text {
+  background-color: #0000000d !important;
+}
+.search_btn {
+  border: 1px solid #0578be;
+  background-color: #2e86de;
+  padding: 5px 10px;
+  min-width: 100px;
+}
+.search_btn-dark {
+  border: 1px solid white;
+  background-color: transparent;
+  padding: 5px 10px;
+  min-width: 100px;
+  color: white;
+}
+.reset_btn {
+  border: 1px solid #df4b4b;
+  background-color: #df4b4b;
+  padding: 5px 10px;
+  min-width: 100px;
+}
+.reset_btn-dark {
+  border: 1px solid white;
+  background-color: transparent;
+  padding: 5px 10px;
+  min-width: 100px;
+  color: white;
+}
+.multi_select {
+  max-width: 200px;
+  max-height: 40px;
+}
+.date_picker .form-control {
+  font-size: 16px !important;
+}

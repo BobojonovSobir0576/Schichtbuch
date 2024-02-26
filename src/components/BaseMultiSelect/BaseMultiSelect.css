@@ -1,0 +1,12 @@
+.select_cus {
+  background-color: white;
+  border-radius: 8px !important;
+  font-size: 20px;
+}
+.searchWrapper {
+  border-radius: 8px;
+  padding-left: 15px;
+}
+.chip {
+  font-size: 15px;
+}

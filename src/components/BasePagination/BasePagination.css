@@ -1,0 +1,4 @@
+.pagination-bg {
+  --bs-pagination-bg: transparent !important;
+  --bs-pagination-color: white !important;
+}
