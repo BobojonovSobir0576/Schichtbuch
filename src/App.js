@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import BaseTabs from './components/BaseTabs/BaseTabs';
-import logo from './logo_book_left.png'
+import logo from './ebook-svgrepo-com_wb.svg'
 import logoRight from './KTB_Logo_rigth.png'
 import logoWriteRight from './KTB_Logo_white_right.png'
 import './App.css';
