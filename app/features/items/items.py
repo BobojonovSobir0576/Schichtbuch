@@ -18,7 +18,7 @@ item_router = APIRouter()
 def read_excel_file(id_number):
     baufnr = int(str(id_number)[:6])
     pos = int(str(id_number)[-3:])
-    file_path = r'C:\Users\admin\Desktop\Schichtbuch2\app\testdata\Testdata.xlsx'
+    file_path = r'C:\Users\admin\Desktop\523\Schichtbuch\app\testdata\Testdata.xlsx'
     df = pd.read_excel(file_path)
     found_rows = []
     for index, row in df.iterrows():
