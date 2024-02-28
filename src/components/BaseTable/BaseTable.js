@@ -375,7 +375,7 @@ const BaseTable = ({
                     })}
                   </td>
                   {/* item?.notes?.length - 1 */}
-                  <td className="width-not">{item?.notes[0].note}</td>
+                  <td className="width-not">{item?.notes[0]?.note}</td>
                   <td>
                     <div className="d-flex flex-row justify-content-center">
                       <span

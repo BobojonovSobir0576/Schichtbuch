@@ -4,6 +4,17 @@ from fastapi import Form
 from pydantic import BaseModel, Field, constr
 
 
+class BaufrnSchema(BaseModel):
+    id: int
+    partname: str
+    partnr: str
+    baufrn: str
+    pos: str
+
+    class Config:
+        orm_mode = True
+
+
 class ItemBaseSchema(BaseModel):
     id: Optional[int] = None
     date: Optional[datetime] = None

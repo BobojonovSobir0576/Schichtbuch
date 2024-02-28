@@ -7,30 +7,34 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from configs import models
-from configs.database import get_db
+from configs.database import get_db, get_db2
 from . import schemas
-from .schemas import GetItemsParams
+from .schemas import GetItemsParams, BaufrnSchema
 import pandas as pd
 from io import BytesIO
 
+
 item_router = APIRouter()
 
-def read_excel_file(id_number):
+
+def get_part_number_name(id_number : int, db: Session):
     baufnr = int(str(id_number)[:6])
     pos = int(str(id_number)[-3:])
-    file_path = r'C:\Users\admin\Desktop\523\Schichtbuch\app\testdata\Testdata.xlsx'
-    df = pd.read_excel(file_path)
-    found_rows = []
-    for index, row in df.iterrows():
-        if int(row['Baufnr']) == baufnr and int(row['Pos']) == pos:
-            found_rows.append({'Partnumber': row['Partnumber'], 'Partname': row['Partname']})
-    return found_rows if found_rows else None
+    filter_data = db.query(models.Baufrn).filter_by(
+        baufrn=baufnr,
+        pos=pos
+    ).first()
 
+    if filter_data:
+        return filter_data.partname, filter_data.partnr
+    else:
+        return '', ''
 
 
 @item_router.get('/', status_code=status.HTTP_200_OK)
 async def get_items(params: GetItemsParams = Depends(GetItemsParams),
-                    db: Session = Depends(get_db)):
+                    db: Session = Depends(get_db),
+                    db2: Session = Depends(get_db2)):
     skip = (params.page - 1) * params.limit
     query = db.query(models.Items)
     print(query)
@@ -60,13 +64,13 @@ async def get_items(params: GetItemsParams = Depends(GetItemsParams),
     items = query.limit(params.limit).offset(skip).all()
 
     data = []
-
     for i in items:
         notes = db.query(models.Notes.note, models.Notes.created_at).filter(models.Notes.item_id == i.id).all()
 
         notes = [{'note': j[0], 'created_at': j[1]} for j in notes]
-        result = read_excel_file(i.operation_order_number)
-        item = {'id': i.id, 'date': i.date, 'ma': i.ma, 'machine': i.machine, 'partnr': result[0]['Partnumber'] if result else '', 'partname':  result[0]['Partname'] if result else '', 'notes': notes, 'image': i.image,
+        partname, partnr = get_part_number_name(i.operation_order_number, db2)
+
+        item = {'id': i.id, 'date': i.date, 'ma': i.ma, 'machine': i.machine, 'partnr': partnr, 'partname': partname, 'notes': notes, 'image': i.image,
                 'status': i.status}
         data.append(item)
 
@@ -86,7 +90,8 @@ async def get_items_ma(db: Session = Depends(get_db)):
 @item_router.post('/', status_code=status.HTTP_201_CREATED)
 async def create_item(payload: schemas.ItemBaseSchema = Depends(schemas.ItemBaseSchema.as_form),
                       file: Optional[UploadFile] = File(None),
-                      db: Session = Depends(get_db)):
+                      db: Session = Depends(get_db),
+                      db2: Session = Depends(get_db2)):
     date = datetime.now().strftime('%Y/%m')
     dirs = f'assets/files/{date}'
 
@@ -107,6 +112,16 @@ async def create_item(payload: schemas.ItemBaseSchema = Depends(schemas.ItemBase
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
+
+    # static_baufrn_data = models.Baufrn(
+    #     partname="Static Part Name",
+    #     partnr="StaticPartNr123",
+    #     baufrn="803385",
+    #     pos="1"
+    # )
+    # db2.add(static_baufrn_data)
+    # db2.commit()
+    # db2.refresh(static_baufrn_data)
 
     note_data = [models.Notes(item_id=new_item.id, note=i) for i in notes]
     db.bulk_save_objects(note_data)
